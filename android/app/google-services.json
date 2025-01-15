@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "760422703045",
+    "project_id": "my-demo-chat-a30aa",
+    "storage_bucket": "my-demo-chat-a30aa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760422703045:android:849b13c7978e1f5abcb5ac",
+        "android_client_info": {
+          "package_name": "com.example.logindemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760422703045-4pecbfflb15mlqduqtlbshv171gldqmb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.logindemo",
+            "certificate_hash": "6746afccb290d4eca1c9e0ce628303d9d012cd55"
+          }
+        },
+        {
+          "client_id": "760422703045-ddosofn6cqcrd93qif9nlpv67gkj4g4h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPabp-wHvLBCp63BBfyiJk2LBqVsM-ly4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760422703045-ddosofn6cqcrd93qif9nlpv67gkj4g4h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
