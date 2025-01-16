@@ -17,12 +17,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(
+        title: const Text("Login"),
+        centerTitle: true,
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoading) {
             showDialog(
               context: context,
+              barrierDismissible: false,
               builder: (_) => const Center(child: CircularProgressIndicator()),
             );
           } else if (state is AuthEmailVerificationSent) {
@@ -47,15 +51,23 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Email Field
+                const Text(
+                  "Welcome Back!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 32),
                 TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: "Enter your email"),
+                  decoration: const InputDecoration(
+                    labelText: "Enter your email",
+                    prefixIcon: Icon(Icons.email, color: Colors.white),
+                  ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 16),
-                // Email Verification Button
+                const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
                     String email = _emailController.text;
@@ -70,20 +82,20 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text("Send Verification Email"),
                 ),
                 const SizedBox(height: 16),
-                // Google Login Button
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: () {
                     context.read<AuthBloc>().add(SignInWithGoogle());
                   },
-                  child: const Text("Sign in with Google"),
+                  icon: const Icon(Icons.login, color: Colors.white),
+                  label: const Text("Sign in with Google"),
                 ),
                 const SizedBox(height: 16),
-                // Facebook Login Button
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: () {
                     context.read<AuthBloc>().add(SignInWithFacebook());
                   },
-                  child: const Text("Sign in with Facebook"),
+                  icon: const Icon(Icons.facebook, color: Colors.white),
+                  label: const Text("Sign in with Facebook"),
                 ),
               ],
             ),
