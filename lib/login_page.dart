@@ -4,6 +4,7 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -46,58 +47,60 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  "Welcome Back!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 32),
-                TextField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Enter your email",
-                    prefixIcon: Icon(Icons.email, color: Colors.white),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Welcome Back!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    String email = _emailController.text;
-                    if (email.isNotEmpty) {
-                      context.read<AuthBloc>().add(SendEmailVerification(email));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Please enter a valid email")),
-                      );
-                    }
-                  },
-                  child: const Text("Send Verification Email"),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(SignInWithGoogle());
-                  },
-                  icon: const Icon(Icons.login, color: Colors.white),
-                  label: const Text("Sign in with Google"),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(SignInWithFacebook());
-                  },
-                  icon: const Icon(Icons.facebook, color: Colors.white),
-                  label: const Text("Sign in with Facebook"),
-                ),
-              ],
+                  const SizedBox(height: 32),
+                  TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: "Enter your email",
+                      prefixIcon: Icon(Icons.email, color: Colors.white),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      String email = _emailController.text;
+                      if (email.isNotEmpty) {
+                        context.read<AuthBloc>().add(SendEmailVerification(email));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Please enter a valid email")),
+                        );
+                      }
+                    },
+                    child: const Text("Send Verification Email"),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(SignInWithGoogle());
+                    },
+                    icon: const Icon(Icons.login, color: Colors.white),
+                    label: const Text("Sign in with Google"),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(SignInWithFacebook());
+                    },
+                    icon: const Icon(Icons.facebook, color: Colors.white),
+                    label: const Text("Sign in with Facebook"),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

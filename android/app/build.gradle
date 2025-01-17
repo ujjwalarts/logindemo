@@ -52,7 +52,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:12.3.0'
     implementation 'com.google.firebase:firebase-core:21.1.0'  // Add or update this line
     implementation 'com.google.firebase:firebase-auth:21.0.3' // Example, for auth dependency
-    implementation 'com.google.firebase:firebase-firestore:24.1.0'    
+    implementation 'com.google.firebase:firebase-firestore:24.1.0'  
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'  
 }
 
 apply plugin: 'com.google.gms.google-services'

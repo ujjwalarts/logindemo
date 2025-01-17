@@ -20,12 +20,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 on<SignInWithGoogle>((event, emit) async {
   emit(AuthLoading());
   try {
-    await authRepository.signInWithGoogle();
-    emit(AuthSuccess());
+    bool success = await authRepository.signInWithGoogle();
+    if (success) {
+      emit(AuthSuccess());
+    } else {
+      emit(AuthFailure("Google sign-in was canceled."));
+    }
   } catch (e) {
     emit(AuthFailure(e.toString()));
   }
 });
+
 
 
     on<SignInWithFacebook>((event, emit) async {

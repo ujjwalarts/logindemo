@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AuthRepository {
@@ -11,24 +12,27 @@ class AuthRepository {
     ActionCodeSettings actionCodeSettings = ActionCodeSettings(
       url: 'https://ujjwalism.page.link/qbvQ?email=$email', // Your Dynamic Link
       handleCodeInApp: true,
-      iOSBundleId: 'com.example.ios', // Your iOS bundle ID
+      iOSBundleId: 'com.example.logindemo', // Your iOS bundle ID
       androidPackageName: 'com.example.logindemo', // Your Android package name
       androidInstallApp: true,
       androidMinimumVersion: '21', // Minimum Android version
     );
 
-    try {
-      // Send the sign-in link to the email
-      await _auth.sendSignInLinkToEmail(
-        email: email,
-        actionCodeSettings: actionCodeSettings,
-      );
-      print("Email sent to $email");
-    } catch (e) {
-      print("Error sending email: $e");
-      rethrow;
-    }
+   try {
+    // Store email in shared preferences
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('passwordLessEmail', email);
+
+    // Send the email link
+    await _auth.sendSignInLinkToEmail(
+      email: email,
+      actionCodeSettings: actionCodeSettings,
+    );
+    print("Verification email sent to $email");
+  } catch (e) {
+    print("Error sending email verification link: $e");
   }
+}
 
   Future<User?> signInWithEmailLink(String email, String emailLink) async {
     try {
@@ -53,13 +57,17 @@ class AuthRepository {
 
 
   // Google Sign-In
-Future<void> signInWithGoogle() async {
+Future<bool> signInWithGoogle() async {
   try {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     await googleSignIn.signOut(); // Clear any previous session.
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-    if (googleUser == null) return; // User canceled the sign-in.
+    if (googleUser == null) {
+      // User canceled the sign-in
+      print('Google sign-in cancelled.');
+      return false;
+    }
 
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(
@@ -71,7 +79,9 @@ Future<void> signInWithGoogle() async {
 
     if (userCredential.user != null) {
       print('Google sign-in successful: ${userCredential.user!.email}');
+      return true;
     }
+    return false; // Return false if sign-in fails for any reason
   } catch (e) {
     print('Google sign-in failed: $e');
     rethrow;
@@ -79,38 +89,73 @@ Future<void> signInWithGoogle() async {
 }
 
 
+
   //Facebook Sign-In
-Future<void> signInWithFacebook() async {
+
+  Future<UserCredential> signInWithFacebook() async {
+  // Trigger the sign-in flow
+  final LoginResult loginResult = await FacebookAuth.instance.login();
+
+  // Create a credential from the access token
+  final OAuthCredential facebookAuthCredential = 
+  FacebookAuthProvider.credential('${loginResult.accessToken?.tokenString}');
+
+  // Once signed in, return the UserCredential
+  return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+}
+
+Future<bool> verifyEmailLink(String email, String emailLink) async {
   try {
-    // Trigger the Facebook login flow
-    final LoginResult result = await FacebookAuth.instance.login();
-
-    if (result.status == LoginStatus.success) {
-      // Retrieve the access token using `toJson()`
-      final Map<String, dynamic>? accessTokenData = result.accessToken?.toJson();
-
-      if (accessTokenData != null && accessTokenData['token'] != null) {
-        // Extract the token from the access token data
-        final String token = accessTokenData['token'];
-
-        // Use the token to create a Facebook AuthCredential
-        final OAuthCredential credential = FacebookAuthProvider.credential(token);
-
-        // Sign in to Firebase with the Facebook credential
-        final UserCredential userCredential = await _auth.signInWithCredential(credential);
-
-        print('User signed in with Facebook: ${userCredential.user}');
-      } else {
-        print('Failed to retrieve access token from Facebook.');
+    if (_auth.isSignInWithEmailLink(emailLink)) {
+      // Sign in with the email link
+      UserCredential userCredential = await _auth.signInWithEmailLink(
+        email: email,
+        emailLink: emailLink,
+      );
+      if (userCredential.user != null) {
+        print("Email verification successful");
+        return true; // Return true on success
       }
     } else {
-      print('Facebook login failed: ${result.message}');
+      print("Invalid email verification link");
     }
   } catch (e) {
-    print('Error during Facebook login: $e');
-    rethrow;
+    print("Error verifying email link: $e");
   }
+  return false; // Return false on failure
 }
+
+// Future<void> signInWithFacebook() async {
+//   try {
+//     // Trigger the Facebook login flow
+//     final LoginResult result = await FacebookAuth.instance.login();
+
+//     if (result.status == LoginStatus.success) {
+//       // Retrieve the access token using `toJson()`
+//       final Map<String, dynamic>? accessTokenData = result.accessToken?.toJson();
+
+//       if (accessTokenData != null && accessTokenData['token'] != null) {
+//         // Extract the token from the access token data
+//         final String token = accessTokenData['token'];
+
+//         // Use the token to create a Facebook AuthCredential
+//         final OAuthCredential credential = FacebookAuthProvider.credential(token);
+
+//         // Sign in to Firebase with the Facebook credential
+//         final UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+//         print('User signed in with Facebook: ${userCredential.user}');
+//       } else {
+//         print('Failed to retrieve access token from Facebook.');
+//       }
+//     } else {
+//       print('Facebook login failed: ${result.message}');
+//     }
+//   } catch (e) {
+//     print('Error during Facebook login: $e');
+//     rethrow;
+//   }
+// }
 
  /// Handle Dynamic Links and Sign-In
   // Future<bool> retrieveDynamicLinkAndSignIn({required bool fromColdState}) async {

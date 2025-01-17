@@ -45,5 +45,49 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+  
+	<!-- Firebase Dynamic Links -->
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://ujjwalism.page.link</string> <!-- Replace with your dynamic link domain -->
+	</array>
+
+	<!-- Associated Domains for Dynamic Links -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:ujjwalism.page.link</string> <!-- Replace with your domain -->
+	</array>
+
+	<!-- Facebook Login Configuration -->
+	<key>FacebookAppID</key>
+	<string>1290249965587886</string> <!-- Replace with your Facebook App ID -->
+	<key>FacebookClientToken</key>
+	<string>213bebc365c2e0f4ec49ec9675ee470a</string> <!-- Replace with your Facebook Client Token -->
+	<key>FacebookDisplayName</key>
+	<string>logindemo</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+
+	<!-- URL Schemes for Facebook Login -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1290249965587886</string> <!-- Facebook URL Scheme -->
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.760422703045-5p4u3u7trpj7rkpr66614n3ienotkgij</string> <!-- Replace with your iOS Client ID -->
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
