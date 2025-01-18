@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="facebook_app_id">1290249965587886</string>
-    <string name="facebook_client_token">213bebc365c2e0f4ec49ec9675ee470a</string>
-    <string name="fb_login_protocol_scheme">fb1290249965587886</string>
+    <string name="facebook_app_id">"Enter your app id here"</string>
+    <string name="facebook_client_token">"Enter your client  token"</string>
+    <string name="fb_login_protocol_scheme">"Enter your app id with prefix fb"</string>
     <string name="app_name">logindemo</string>
 </resources>
